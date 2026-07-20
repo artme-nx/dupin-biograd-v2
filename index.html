@@ -218,7 +218,7 @@
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-media">
-    <img id="heroImg" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=2000&q=80" alt="Stol uz more pri zalasku sunca, večernje svjetlo nad Jadranom" />
+    <img id="heroImg" src="img/dupin-interijer-lukovi.webp" alt="Večernji interijer restorana Dupin — terakota zidovi, lučni prozori s drvenim kapcima i topla rasvjeta" />
   </div>
   <div class="hero-inner">
     <span class="eyebrow">Restoran uz more · Biograd na Moru</span>
@@ -251,7 +251,7 @@
 <!-- STORY 1 -->
 <section class="pad">
   <div class="wrap split">
-    <div class="split-img reveal"><img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1400&q=80" alt="Riba pečena na žaru, večernja svjetlost" /></div>
+    <div class="split-img reveal"><img src="img/dupin-zar-plata.webp" alt="Lignje s gradela s rukolom i limunom, u restoranu Dupin" /></div>
     <div class="split-txt reveal">
       <p class="eyebrow">Iz mora, na vatru</p>
       <h2>Riba koju je<br><em>more upravo predalo</em></h2>
@@ -264,7 +264,7 @@
 <!-- STORY 2 -->
 <section class="pad" style="padding-top:0">
   <div class="wrap split rev">
-    <div class="split-img reveal"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=80" alt="Intimni večernji interijer restorana uz svjetlost svijeća" /></div>
+    <div class="split-img reveal"><img src="img/dupin-vrt-terasa.webp" alt="Vrtna terasa restorana Dupin s dugim drvenim stolom pod natkrivenom pergolom" /></div>
     <div class="split-txt reveal">
       <p class="eyebrow">Stol pod zvijezdama</p>
       <h2>Večeri koje<br><em>traju dulje</em></h2>
@@ -326,11 +326,11 @@
       <h2>Trenutci <em>uz more</em></h2>
     </div>
     <div class="gallery">
-      <figure class="g1 reveal"><img src="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=1300&q=80" alt="Plato svježih plodova mora"></figure>
-      <figure class="g2 reveal"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1100&q=80" alt="Stol uz more u suton"></figure>
-      <figure class="g3 reveal"><img src="https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?auto=format&fit=crop&w=1000&q=80" alt="Crni rižoto od sipe"></figure>
-      <figure class="g4 reveal"><img src="https://images.unsplash.com/photo-1535007813616-79dc02ba4021?auto=format&fit=crop&w=1000&q=80" alt="Riba s roštilja"></figure>
-      <figure class="g5 reveal"><img src="https://images.unsplash.com/photo-1444858345149-8ce5f8fb6c5c?auto=format&fit=crop&w=1000&q=80" alt="Marina i jedrilice u suton"></figure>
+      <figure class="g1 reveal"><img src="img/dupin-dagnje-buzara.webp" alt="Dagnje na buzaru sa špagetima u glinenoj zdjeli"></figure>
+      <figure class="g2 reveal"><img src="img/dupin-pileci-snicel.webp" alt="Pileći odrezak s gradela s pečenim krumpirom i povrćem"></figure>
+      <figure class="g3 reveal"><img src="img/dupin-raznjici-gambera.webp" alt="Ražnjići od gambera s rižom i maslinama"></figure>
+      <figure class="g4 reveal"><img src="img/dupin-biftek-krumpir.webp" alt="Meso s gradela s pečenim krumpirom, ajvarom i vrhnjem"></figure>
+      <figure class="g5 reveal"><img src="img/dupin-spare-ribs.webp" alt="Spare ribs na drvenoj dasci s pečenim krumpirom i umakom"></figure>
     </div>
   </div>
 </section>
@@ -369,7 +369,6 @@
 <section class="pad">
   <div class="wrap">
     <div class="cta reveal">
-      <div class="cta-bg"><img src="https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?auto=format&fit=crop&w=1800&q=80" alt="Jadransko more u suton"></div>
       <div class="cta-inner">
         <h2>Stol vas čeka <em>pod zvijezdama</em></h2>
         <p>Dođite na večeru uz svjetlost svijeća i šum mora.</p>
@@ -484,9 +483,9 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeRes(); });
 })();
 
 if(!reduce){
-  const lenis = new Lenis({lerp:0.2, wheelMultiplier:1, smoothWheel:true, syncTouch:false});
-  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
+  const lenis = new Lenis({lerp:0.1, wheelMultiplier:1, smoothWheel:true, syncTouch:false}); window.__lenis = lenis;
+  gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+  gsap.ticker.lagSmoothing(0);
   gsap.registerPlugin(ScrollTrigger);
   lenis.on('scroll', ScrollTrigger.update);
 
@@ -519,6 +518,48 @@ if(!reduce){
   document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
   document.querySelectorAll('.word').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
 }
+</script>
+
+<script>
+/* QA scroll-fix — glatko, bez lomova i preskakanja (mobitel prioritet) */
+(function(){
+  var lenis = window.__lenis || null;
+
+  /* jedinstveni smooth-scroll ulaz: Lenis ako postoji, inače nativni */
+  window.__smoothTo = function(target){
+    var el = (typeof target === 'string') ? document.querySelector(target) : target;
+    if(!el) return;
+    if(lenis){ lenis.scrollTo(el, {offset:0, duration:1.1}); }
+    else { el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  };
+
+  /* anchor linkovi kroz isti ulaz — nema nativnog skoka preko Lenisa */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    var href = a.getAttribute('href');
+    if(!href || href === '#') return;
+    a.addEventListener('click', function(e){
+      var el = document.querySelector(href);
+      if(!el) return;
+      e.preventDefault();
+      window.__smoothTo(el);
+      if(history.replaceState) history.replaceState(null, '', href);
+    });
+  });
+
+  /* ScrollTrigger pozicije preračunati kad se layout slegne (slike!) */
+  if(window.ScrollTrigger){
+    var refresh = function(){ ScrollTrigger.refresh(); };
+    window.addEventListener('load', refresh);
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+    document.querySelectorAll('img').forEach(function(img){
+      if(!img.complete) img.addEventListener('load', refresh, {once:true});
+    });
+    var rt; window.addEventListener('resize', function(){
+      clearTimeout(rt); rt = setTimeout(refresh, 150);
+    }, {passive:true});
+    setTimeout(refresh, 600);
+  }
+})();
 </script>
 </body>
 </html>
